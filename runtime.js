@@ -133,7 +133,7 @@ exports.attrs = function attrs(obj, escaped){
 
 exports.escape = function escape(html){
   return String(html)
-    .replace(/&(?!(\w+|\#\d+);)/g, '&amp;')
+    .replace(/&/g, '&amp;')
     .replace(/</g, '&lt;')
     .replace(/>/g, '&gt;')
     .replace(/"/g, '&quot;');
@@ -151,6 +151,7 @@ exports.escape = function escape(html){
 
 exports.rethrow = function rethrow(err, filename, lineno){
   if (!filename) throw err;
+  if (typeof window != 'undefined') throw err;
 
   var context = 3
     , str = require('fs').readFileSync(filename, 'utf8')
@@ -174,6 +175,12 @@ exports.rethrow = function rethrow(err, filename, lineno){
   throw err;
 };
 
+/**
+ * Contains globals for jade scoping
+ * @type {Object}
+ */
+
+exports.globals = {};
   return exports;
 
 })({});
